@@ -20,6 +20,18 @@ def load_jobs_from_db():
       jobs.append(dict(row))
     return jobs
 
+def load_job_from_db(id):
+  with engine.connect() as conn:
+    result = conn.execute(
+      text("select * from jobs where id = :val"),
+    val=id)
+    rows = result.all()
+    if len(rows) == 0:
+      return None
+    else:
+      return dict(rows[0])
+    
+
 # with engine.connect() as conn:
 #   result = conn.execute(text("select * from jobs"))
 
@@ -37,3 +49,13 @@ def load_jobs_from_db():
 #     result_dicts.append(dict(row))
   
 #   print(result_dicts)
+
+# def load_jobs_from_db(id):
+#   with engine.connect() as conn:
+#     result = conn.execute(text("select * from jobs"))
+
+#     result_dicts = []
+#     for row in result.all():
+#         result_dicts.append(dict(row._mapping))
+
+#     print(result_dicts)
